@@ -1,0 +1,25 @@
+language: go
+sudo: false
+go:
+- 1.8
+jobs:
+  include:
+  - script: make vet check lint coveralls
+  - script: PATH=bin/linux/amd64:$PATH make build acceptance
+  - stage: deploy
+  - script: make build
+    deploy:
+      skip_cleanup: true
+      provider: releases
+      api_key:
+        secure: GhXT1vjiEa71q9QioKk/HpQx/VtxCj8cHuzKR6SdM3aJ5TbCXSMbPwWKB4dLT5AJFv1IAiciTotN6IsaKQ8NpPoIGaSxFz+fVXJH9t3uFiJp8RAwsi5Rskq9TV0130aCK6FVm4cYhEk92i1MR6zr4kBLYz82UsQFMZrEfcLr868rqBr1m2wknxfS/dbYACPvl8gZuWjai4FvVTdZZ/WURVIKUM4iqdk23Ps55ZGSBeUiUxfzt0qGhP79NDgPzeyRYL8cIqIJiyEnXTmaHErLxdh8/RcGfqz4tlnMOeIJwmq/plla8tsDtTxm8YwKjvD/h9aBKcgc/lnW83bGiTjYPfX8cLmZyXJo2s2skyCItVXlYiFYh868sQBbbYCh6hNklUtHUvHUfq1H/UZSgen+22qLT8kVwq6RZajWrlAj0Zui0prZCyAl7XL11zXbfu7rdmpX0J99g8Nrd4r2Il+KyyPQgV4WD3dopGau1hQDv1GXNjWWEJh+ZHDA4/d80NnM5jv6+JcqdRAN21299o6rzoMHDOBoRCIXmwn7B7IBiPYZnAUmEPoqzkk06PveMbh3JG8p3oHfXOslowotO2mQmP7Q1lNwMaccawh9tSVSmX9ZSShXZIqHn0iKpbdrdS5MO9Nql9BFUtt22EF4az3mUtIvwVsd4qyNtGtfMxoGgLw=
+      file:
+      - releases/kubetest-darwin-amd64.tar.gz
+      - releases/kubetest-windows-amd64.tar.gz
+      - releases/kubetest-windows-amd64.zip
+      - releases/kubetest-windows-386.tar.gz
+      - releases/kubetest-windows-386.zip
+      - releases/kubetest-linux-amd64.tar.gz
+      on:
+        repo: garethr/kubetest
+        tags: true
