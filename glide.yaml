@@ -1,0 +1,9 @@
+package: github.com/garethr/kubetest
+import:
+- package: github.com/google/skylark
+- package: github.com/garethr/skyhook
+- package: github.com/sirupsen/logrus
+  version: ^1.0.3
+- package: golang.org/x/crypto
+  subpackages:
+  - ssh/terminal

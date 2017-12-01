@@ -1,0 +1,66 @@
+hash: 716fb45c9580dd597a42affeafe93a4df7546e77709bd2c9366e5289f1675cdb
+updated: 2017-11-13T17:01:11.7346927Z
+imports:
+- name: github.com/fsnotify/fsnotify
+  version: 4da3e2cfbabc9f751898f250b49f2439785783a1
+- name: github.com/garethr/skyhook
+  version: 2eca010bcbbc6c21942c2d2f2cda7fc3e7caa0d7
+  subpackages:
+  - convert
+- name: github.com/google/skylark
+  version: 25f3813368b0c3c0a1ca3b7fd1dab0e876f35dac
+  subpackages:
+  - resolve
+  - syntax
+- name: github.com/hashicorp/hcl
+  version: 68e816d1c783414e79bc65b3994d9ab6b0a722ab
+  subpackages:
+  - hcl/ast
+  - hcl/parser
+  - hcl/scanner
+  - hcl/strconv
+  - hcl/token
+  - json/parser
+  - json/scanner
+  - json/token
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/magiconair/properties
+  version: 8d7837e64d3c1ee4e54a880c5a920ab4316fc90a
+- name: github.com/mitchellh/mapstructure
+  version: d0303fe809921458f417bcf828397a65db30a7e4
+- name: github.com/pelletier/go-toml
+  version: 1d6b12b7cb290426e27e6b4e38b89fcda3aeef03
+- name: github.com/sirupsen/logrus
+  version: f006c2ac4710855cf0f916dd6b77acf6b048dc6e
+- name: github.com/spf13/afero
+  version: ee1bd8ee15a1306d1f9201acc41ef39cd9f99a1b
+  subpackages:
+  - mem
+- name: github.com/spf13/cast
+  version: acbeb36b902d72a7a4c18e8f3241075e7ab763e4
+- name: github.com/spf13/cobra
+  version: b78744579491c1ceeaaa3b40205e56b0591b93a3
+- name: github.com/spf13/jwalterweatherman
+  version: 12bd96e66386c1960ab0f74ced1362f66f552f7b
+- name: github.com/spf13/pflag
+  version: 7aff26db30c1be810f9de5038ec5ef96ac41fd7c
+- name: github.com/spf13/viper
+  version: 25b30aa063fc18e48662b86996252eabdcf2f0c7
+- name: golang.org/x/crypto
+  version: 6a293f2d4b14b8e6d3f0539e383f6d0d30fce3fd
+  subpackages:
+  - ssh/terminal
+- name: golang.org/x/sys
+  version: 1e2299c37cc91a509f1b12369872d27be0ce98a6
+  subpackages:
+  - unix
+  - windows
+- name: golang.org/x/text
+  version: 1cbadb444a806fd9430d14ad08967ed91da4fa0a
+  subpackages:
+  - transform
+  - unicode/norm
+- name: gopkg.in/yaml.v2
+  version: eb3733d160e74a9c7e442f435eb3bea458e1d19f
+testImports: []

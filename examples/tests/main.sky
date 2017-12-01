@@ -1,0 +1,17 @@
+#// vim: set ft=python:
+
+def test_for_latest_image():
+    if spec["kind"] == "ReplicationController":
+        for container in spec["spec"]["template"]["spec"]["containers"]:
+            tag = container["image"].split(":")[-1]
+            assert_not_equal(tag, "latest", "should not use latest images")
+
+
+def test_minimum_replicas():
+    if spec["kind"] == "ReplicationController":
+        test = spec["spec"]["replicas"] >= 4
+        assert_true(test, "ReplicationController should have at least 4 replicas")
+
+
+test_for_latest_image()
+test_minimum_replicas()
