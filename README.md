@@ -17,7 +17,7 @@ Card](https://goreportcard.com/badge/github.com/garethr/kubetest)](https://gorep
 Status](https://coveralls.io/repos/github/garethr/kubetest/badge.svg?branch=master)](https://coveralls.io/github/garethr/kubetest?branch=master)
 
 
-`kubetest` is currently alpha quality and undoutedly has a few issues. Please open issues if you have feedback when trying it out.
+`kubetest` is currently alpha quality and undoutedly has a few issues. Things will change, hopefully for the better. Please open issues if you have feedback when trying it out.
 
 
 ## Writing tests
@@ -33,6 +33,60 @@ def test_for_team_label():
 
 test_for_team_label()
 ```
+
+Save the test file in a directory called `tests`, with a prefix of `.sky`. You can change the default directory name using the `--tests` flag. You can now run `kubetest` against your configuration files.
+
+```bash
+$ kubetest my-deployment.yaml
+WARN my-deployment.yaml Deployment should have at least 4 replicas
+$ echo $?
+1
+``` 
+
+If any of the tests fail then `kubetest` will return a non-zero exit code.
+
+By default `kubetest` outputs information about failing tests only, but you can pass `--verbose` to get information about passing tests as well.
+
+```bash
+$ kubetest rc.yaml --verbose 
+INFO rc.yaml should not use latest images
+WARN rc.yaml ReplicationController should have at least 4 replicas
+```
+  
+## Installation
+
+Tagged versions of `kubetest` are built by Travis and automatically
+uploaded to GitHub. This means you should find `tar.gz` files under the
+release tab. These should contain a single `kubetest` binary for platform
+in the filename (ie. windows, linux, darwin). Either execute that binary
+directly or place it on your path.
+
+```
+wget
+https://github.com/garethr/kubetest/releases/download/0.1.0/kubetest-darwin-amd64.tar.gz
+tar xf kubetest-darwin-amd64.tar.gz
+cp kubetest /usr/local/bin
+```
+
+Windows users can download tar or zip files from the releases tab.
+
+
+## CLI
+
+```
+$ kubetest --help
+Run tests against a Kubernetes YAML file
+
+Usage:
+  kubetest <file> [file...] [flags]
+
+Flags:
+  -h, --help           help for kubetest
+      --json           Output results as JSON
+  -t, --tests string   Test directory (default "tests")
+      --verbose        Output passes as well as failures
+```
+
 
 ## Thanks
 
