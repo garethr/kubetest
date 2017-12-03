@@ -62,8 +62,7 @@ in the filename (ie. windows, linux, darwin). Either execute that binary
 directly or place it on your path.
 
 ```
-wget
-https://github.com/garethr/kubetest/releases/download/0.1.0/kubetest-darwin-amd64.tar.gz
+wget https://github.com/garethr/kubetest/releases/download/0.1.0/kubetest-darwin-amd64.tar.gz
 tar xf kubetest-darwin-amd64.tar.gz
 cp kubetest /usr/local/bin
 ```
