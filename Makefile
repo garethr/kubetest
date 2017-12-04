@@ -86,11 +86,7 @@ docker:
 	docker build -t $(IMAGE_NAME):$(TAG) .
 	docker tag $(IMAGE_NAME):$(TAG) $(IMAGE_NAME):latest
 
-docker-offline:
-	docker build -f Dockerfile.offline -t $(IMAGE_NAME):$(TAG)-offline .
-	docker tag $(IMAGE_NAME):$(TAG)-offline $(IMAGE_NAME):offline
-
-publish: docker docker-offline
+publish: docker
 	docker push $(IMAGE_NAME):$(TAG)
 	docker push $(IMAGE_NAME):latest
 	docker push $(IMAGE_NAME):$(TAG)-offline
