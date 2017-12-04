@@ -52,7 +52,36 @@ $ kubetest rc.yaml --verbose
 INFO rc.yaml should not use latest images
 WARN rc.yaml ReplicationController should have at least 4 replicas
 ```
-  
+
+## The `spec` variable
+
+`spec` is a global variable passed into the Skylark code which contains the structure of the Kubernetes configuration passed in to `kubetest`. You'll need to be reasonably familiar with the structure of the Kubernetes API objects to write tests, but it is possible to write helper methods for common assertions.
+
+
+## Assertions
+
+`kubetest` automatically makes available a set of assertions to make writing tests in Skylark more pleasant. A failed assertion results in `kubetest` exiting with a non-zero exit code, and assertions output results as shown above.
+
+* assert_equal
+* assert_contains
+* assert_not_contains
+* assert_not_equal
+* assert_nil
+* assert_not_nil
+* fail
+* fail_now
+* assert_empty
+* assert_not_empty
+* assert_true
+* assert_false
+
+Assertions take zero, one or two arguments (noted above) depending on what they are comparing. They then take an additional message argument which is output when the assertion runs. For example the following assertion checks whether the variable `labels` contains the value `team`.
+
+```python
+assert_contains(labels, "team", "should indicate which team owns the deployment")
+```
+
+
 ## Installation
 
 Tagged versions of `kubetest` are built by Travis and automatically
