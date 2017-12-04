@@ -3,6 +3,7 @@ IMAGE_NAME=garethr/$(NAME)
 PACKAGE_NAME=github.com/garethr/$(NAME)
 GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
 TAG=$$(git describe --abbrev=0 --tags)
+TAG=0.1.0
 
 LDFLAGS += -X "$(PACKAGE_NAME)/version.BuildTime=$(shell date -u '+%Y-%m-%d %I:%M:%S %Z')"
 LDFLAGS += -X "$(PACKAGE_NAME)/version.BuildVersion=$(shell git describe --abbrev=0 --tags)"
@@ -89,8 +90,6 @@ docker:
 publish: docker
 	docker push $(IMAGE_NAME):$(TAG)
 	docker push $(IMAGE_NAME):latest
-	docker push $(IMAGE_NAME):$(TAG)-offline
-	docker push $(IMAGE_NAME):offline
 
 vet:
 	go vet `glide novendor`
