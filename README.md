@@ -28,7 +28,7 @@ Tests are written in [Skylark](https://github.com/google/skylark), which is a sm
 #// vim: set ft=python:
 def test_for_team_label():
     if spec["kind"] == "Deployment":
-        labels = spec["spec"]["template"]["metadata"]["labels"]:
+        labels = spec["spec"]["template"]["metadata"]["labels"]
         assert_contains(labels, "team", "should indicate which team owns the deployment")
 
 test_for_team_label()
