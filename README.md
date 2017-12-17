@@ -34,7 +34,7 @@ def test_for_team_label():
 test_for_team_label()
 ```
 
-Save the test file in a directory called `tests`, with a prefix of `.sky`. You can change the default directory name using the `--tests` flag. You can now run `kubetest` against your configuration files.
+Save the test file in a directory called `tests`, with an extension of `.sky`. You can change the default directory name using the `--tests` flag. You can now run `kubetest` against your configuration files.
 
 ```bash
 $ kubetest my-deployment.yaml
