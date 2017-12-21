@@ -41,6 +41,15 @@ func Run(config []byte, filePath string, fileName string) bool {
 	var spec interface{}
 	yaml.Unmarshal(config, &spec)
 
+	// A file with all commented out content will otherwise
+	// panic, and we can't make assertions against a blank data
+	// structure anyhow. But there are valid usecases for commented
+	// out files so we warn without throwing an error
+	if spec == nil {
+		log.Warn("The document " + fileName + " does not contain any content")
+		return true
+	}
+
 	sky := skyhook.New([]string{filePath})
 	globals := map[string]interface{}{
 		"file_name":           fileName,
