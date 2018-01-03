@@ -37,7 +37,7 @@ func listTests(testDir string) []string {
 	return files
 }
 
-func Run(config []byte, filePath string, fileName string) bool {
+func Run(config []byte, environment map[interface{}]interface{}, filePath string, fileName string) bool {
 	var spec interface{}
 	yaml.Unmarshal(config, &spec)
 
@@ -54,6 +54,7 @@ func Run(config []byte, filePath string, fileName string) bool {
 	globals := map[string]interface{}{
 		"file_name":           fileName,
 		"spec":                spec,
+		"environment":         environment,
 		"assert_equal":        assert.Equal,
 		"assert_contains":     assert.Contains,
 		"assert_not_contains": assert.NotContains,
@@ -104,7 +105,7 @@ func detectLineBreak(haystack []byte) string {
 	return "\n"
 }
 
-func Runs(config []byte, filePath string, fileName string) bool {
+func Runs(config []byte, environment map[interface{}]interface{}, filePath string, fileName string) bool {
 
 	if len(config) == 0 {
 		log.Error("The document " + fileName + " appears to be empty")
@@ -115,7 +116,7 @@ func Runs(config []byte, filePath string, fileName string) bool {
 	results := make([]bool, 0)
 	for _, element := range bits {
 		if len(element) > 0 {
-			result := Run(element, filePath, fileName)
+			result := Run(element, environment, filePath, fileName)
 			results = append(results, result)
 		}
 	}

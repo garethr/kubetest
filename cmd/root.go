@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	"github.com/garethr/kubetest/kubetest"
 	log "github.com/sirupsen/logrus"
@@ -21,6 +22,7 @@ var RootCmd = &cobra.Command{
 	Long:  `Run tests against a Kubernetes YAML file`,
 	Run: func(cmd *cobra.Command, args []string) {
 		initLogging()
+		environment := initEnvironment()
 		success := true
 		windowsStdinIssue := false
 		testsDir := viper.GetString("testsDir")
@@ -43,7 +45,7 @@ var RootCmd = &cobra.Command{
 			for scanner.Scan() {
 				buffer.WriteString(scanner.Text() + "\n")
 			}
-			runSuccess := kubetest.Runs(buffer.Bytes(), testsDir, "stdin")
+			runSuccess := kubetest.Runs(buffer.Bytes(), environment, testsDir, "stdin")
 			if success {
 				success = runSuccess
 			}
@@ -57,7 +59,7 @@ var RootCmd = &cobra.Command{
 				if err != nil {
 					log.Fatal("Could not open file ", fileName)
 				}
-				runSuccess := kubetest.Runs(fileContents, testsDir, fileName)
+				runSuccess := kubetest.Runs(fileContents, environment, testsDir, fileName)
 				if success {
 					success = runSuccess
 				}
@@ -93,6 +95,19 @@ func initLogging() {
 	}
 }
 
+func initEnvironment() map[interface{}]interface{} {
+	env := make(map[interface{}]interface{})
+	envList := viper.GetString("envList")
+	log.WithFields(log.Fields{"envList": envList}).Info("setting up environment passthrough")
+	for _, name := range strings.Split(envList, ",") {
+		trimmed := strings.TrimSpace(name)
+		value := os.Getenv(trimmed)
+		log.WithFields(log.Fields{trimmed: value}).Info("environment variable")
+		env[trimmed] = value
+	}
+	return env
+}
+
 func init() {
 	viper.SetEnvPrefix("KUBETEST")
 	viper.AutomaticEnv()
@@ -106,4 +121,6 @@ func init() {
 	RootCmd.PersistentFlags().Bool("verbose", false, "Output passes as well as failures")
 	viper.BindPFlag("verbose", RootCmd.PersistentFlags().Lookup("verbose"))
 
+	RootCmd.PersistentFlags().StringP("env", "e", "", "List of environment variables to pass through")
+	viper.BindPFlag("envList", RootCmd.PersistentFlags().Lookup("env"))
 }
