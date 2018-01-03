@@ -102,8 +102,12 @@ func initEnvironment() map[interface{}]interface{} {
 	for _, name := range strings.Split(envList, ",") {
 		trimmed := strings.TrimSpace(name)
 		value := os.Getenv(trimmed)
-		log.WithFields(log.Fields{trimmed: value}).Info("environment variable")
-		env[trimmed] = value
+		logMessage := "skipping empty environment variable"
+		if value != "" {
+			logMessage = "passing through environment variable"
+			env[trimmed] = value
+		}
+		log.WithFields(log.Fields{trimmed: value}).Info(logMessage)
 	}
 	return env
 }
