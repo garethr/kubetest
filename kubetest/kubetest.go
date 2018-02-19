@@ -82,6 +82,7 @@ func Run(config []byte, filePath string, fileName string) bool {
 		message := fmt.Sprintf("%s %s", fileName, result.Message)
 		if result.Kind == assert.AssertionError {
 			log.Error(message)
+			success = false
 		} else if result.Kind == assert.AssertionFailure {
 			log.Warn(message)
 			success = false
