@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"runtime"
 
+	"fmt"
 	"github.com/garethr/kubetest/kubetest"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -22,6 +23,7 @@ var RootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		initLogging()
 		success := true
+		scoreboard := kubetest.Scoreboard{}
 		windowsStdinIssue := false
 		testsDir := viper.GetString("testsDir")
 		stat, err := os.Stdin.Stat()
@@ -43,7 +45,8 @@ var RootCmd = &cobra.Command{
 			for scanner.Scan() {
 				buffer.WriteString(scanner.Text() + "\n")
 			}
-			runSuccess := kubetest.Runs(buffer.Bytes(), testsDir, "stdin")
+			runSuccess, s := kubetest.Runs(buffer.Bytes(), testsDir, "stdin")
+			scoreboard = s
 			if success {
 				success = runSuccess
 			}
@@ -57,12 +60,33 @@ var RootCmd = &cobra.Command{
 				if err != nil {
 					log.Fatal("Could not open file ", fileName)
 				}
-				runSuccess := kubetest.Runs(fileContents, testsDir, fileName)
+				runSuccess, s := kubetest.Runs(fileContents, testsDir, fileName)
+				scoreboard = s
+
 				if success {
 					success = runSuccess
 				}
 			}
 		}
+
+		if success {
+			fmt.Printf(
+				"\nOK (Files: %v, Resources: %v, Assertions: %v)",
+				scoreboard.Files,
+				scoreboard.Resources,
+				scoreboard.Assertions,
+			)
+		} else {
+			fmt.Printf(
+				"\nFAILURES! (Files: %v, Resources: %v, Assertions: %v, Failures: %v)",
+				scoreboard.Files,
+				scoreboard.Resources,
+				scoreboard.Assertions,
+				scoreboard.Failures,
+			)
+		}
+
+
 		if !success {
 			os.Exit(1)
 		}
