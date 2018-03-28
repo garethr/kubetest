@@ -110,7 +110,7 @@ func Runs(config []byte, filePath string, fileName string) bool {
 		log.Error("The document " + fileName + " appears to be empty")
 	}
 
-	bits := bytes.Split(config, []byte("---"+detectLineBreak(config)))
+	bits := bytes.Split(config, []byte(detectLineBreak(config)+"---"+detectLineBreak(config)))
 
 	results := make([]bool, 0)
 	for _, element := range bits {
