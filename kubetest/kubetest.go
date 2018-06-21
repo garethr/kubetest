@@ -14,6 +14,7 @@ import (
 	"gopkg.in/yaml.v2"
 
 	"github.com/garethr/kubetest/assert"
+	"github.com/spf13/viper"
 )
 
 func listTests(testDir string) []string {
@@ -46,7 +47,9 @@ func Run(config []byte, filePath string, fileName string) bool {
 	// structure anyhow. But there are valid usecases for commented
 	// out files so we warn without throwing an error
 	if spec == nil {
-		log.Warn("The document " + fileName + " does not contain any content")
+		if !viper.GetBool("ignoreemptyfiles") {
+			log.Warn("The document " + fileName + " does not contain any content")
+		}
 		return true
 	}
 

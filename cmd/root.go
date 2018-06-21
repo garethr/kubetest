@@ -106,4 +106,7 @@ func init() {
 	RootCmd.PersistentFlags().Bool("verbose", false, "Output passes as well as failures")
 	viper.BindPFlag("verbose", RootCmd.PersistentFlags().Lookup("verbose"))
 
+	RootCmd.PersistentFlags().Bool("ignoreemptyfiles", false, "Ignore empty files")
+	viper.BindPFlag("ignoreemptyfiles", RootCmd.PersistentFlags().Lookup("ignoreemptyfiles"))
+
 }
