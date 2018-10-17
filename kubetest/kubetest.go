@@ -27,7 +27,7 @@ func listTests(testDir string) []string {
 	var files []string
 	filepath.Walk(fullTestDir, func(path string, f os.FileInfo, _ error) error {
 		if !f.IsDir() {
-			r, err := regexp.MatchString(".sky", f.Name())
+			r, err := regexp.MatchString(".sky$", f.Name())
 			if err == nil && r {
 				files = append(files, f.Name())
 			}
