@@ -1,3 +1,5 @@
+_Kubetest was an interesting experiment, but I've mainly moved my focus to [Conftest](https://github.com/instrumenta/conftest) which has a similar, but broader, goal. Conftest also uses the much more powerful, and supported, Rego language from Open Polciy Agent. Given this, I'm archiving this repository._ 
+
 # Kubetest
 
 `kubetest` is a tool for running tests against a Kubernetes YAML or JSON configuration file.
