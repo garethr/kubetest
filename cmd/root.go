@@ -43,7 +43,7 @@ var RootCmd = &cobra.Command{
 			for scanner.Scan() {
 				buffer.WriteString(scanner.Text() + "\n")
 			}
-			runSuccess := kubetest.Runs(buffer.Bytes(), testsDir, "stdin")
+			runSuccess := kubetest.Runs(buffer.Bytes(), testsDir, viper.GetString("filename"))
 			if success {
 				success = runSuccess
 			}
@@ -106,4 +106,6 @@ func init() {
 	RootCmd.PersistentFlags().Bool("verbose", false, "Output passes as well as failures")
 	viper.BindPFlag("verbose", RootCmd.PersistentFlags().Lookup("verbose"))
 
+	RootCmd.PersistentFlags().StringP("filename", "f", "stdin", "filename to be displayed when testing manifests read from stdin")
+	viper.BindPFlag("filename", RootCmd.PersistentFlags().Lookup("filename"))
 }
