@@ -55,6 +55,23 @@ INFO rc.yaml should not use latest images
 WARN rc.yaml ReplicationController should have at least 4 replicas
 ```
 
+## the `environment` variable
+
+`environment` is a global variable passed into the Skylark code which contains a white-listed subset of the calling environment as passed to `kubetest`.
+
+The whitelist is specified with the `--env` commandline option to `kubetest`. Environment variable names are separated by commas.  An example is included in `examples/`. If invoked with the `--env=MINREPLICAS` option, the `MINREPLICAS` environment variable will be available at `environment["MINREPLICAS"].
+
+All variables will be passed through as strings to Skylark, so if type conversion is required, that will need to be done in Skylark code, as in the below example:
+
+```
+if "MINREPLICAS" in environment:
+  minreplicas = int(environment["MINREPLICAS"],10)
+else:
+  minreplicas = 4
+```
+
+
+
 ## The `spec` variable
 
 `spec` is a global variable passed into the Skylark code which contains the structure of the Kubernetes configuration passed in to `kubetest`. You'll need to be reasonably familiar with the structure of the Kubernetes API objects to write tests, but it is possible to write helper methods for common assertions.

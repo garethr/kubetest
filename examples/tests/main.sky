@@ -8,9 +8,13 @@ def test_for_latest_image():
 
 
 def test_minimum_replicas():
+    if "MINREPLICAS" in environment:
+      minreplicas = int(environment["MINREPLICAS"],10)
+    else:
+      minreplicas = 4
     if spec["kind"] == "ReplicationController":
-        test = spec["spec"]["replicas"] >= 4
-        assert_true(test, "ReplicationController should have at least 4 replicas")
+        test = spec["spec"]["replicas"] >= minreplicas
+        assert_true(test, "ReplicationController should have at least {0} replicas".format(minreplicas))
 
 
 test_for_latest_image()
