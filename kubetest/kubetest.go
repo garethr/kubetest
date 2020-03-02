@@ -16,6 +16,29 @@ import (
 	"github.com/garethr/kubetest/assert"
 )
 
+var scoreboard Scoreboard
+
+// Scoreboard holds metrics related to the kubetest run
+type Scoreboard struct {
+	Files      int
+	Resources  int
+	Assertions int
+	Successes  int
+	Failures   int
+}
+
+// success increments success metrics
+func (s *Scoreboard) success() {
+	s.Assertions++
+	s.Successes++
+}
+
+// failure increments failure metrics
+func (s *Scoreboard) failure() {
+	s.Assertions++
+	s.Failures++
+}
+
 func listTests(testDir string) []string {
 	fullTestDir, err := filepath.Abs(testDir)
 	if err != nil {
@@ -50,6 +73,8 @@ func Run(config []byte, filePath string, fileName string) bool {
 		return true
 	}
 
+	scoreboard.Resources++
+
 	sky := skyhook.New([]string{filePath})
 	globals := map[string]interface{}{
 		"file_name":           fileName,
@@ -80,13 +105,17 @@ func Run(config []byte, filePath string, fileName string) bool {
 
 	for _, result := range assert.Results {
 		message := fmt.Sprintf("%s %s", fileName, result.Message)
-		if result.Kind == assert.AssertionError {
+		switch result.Kind {
+		case assert.AssertionError:
 			log.Error(message)
-		} else if result.Kind == assert.AssertionFailure {
+			scoreboard.Assertions++
+		case assert.AssertionFailure:
 			log.Warn(message)
 			success = false
-		} else if result.Kind == assert.AssertionSuccess {
+			scoreboard.failure()
+		case assert.AssertionSuccess:
 			log.Info(message)
+			scoreboard.success()
 		}
 	}
 
@@ -104,13 +133,15 @@ func detectLineBreak(haystack []byte) string {
 	return "\n"
 }
 
-func Runs(config []byte, filePath string, fileName string) bool {
+func Runs(config []byte, filePath string, fileName string) (bool, Scoreboard) {
 
 	if len(config) == 0 {
 		log.Error("The document " + fileName + " appears to be empty")
 	}
 
 	bits := bytes.Split(config, []byte("---"+detectLineBreak(config)))
+
+	scoreboard.Files++
 
 	results := make([]bool, 0)
 	for _, element := range bits {
@@ -122,8 +153,8 @@ func Runs(config []byte, filePath string, fileName string) bool {
 
 	for _, value := range results {
 		if value == false {
-			return false
+			return false, scoreboard
 		}
 	}
-	return true
+	return true, scoreboard
 }
